@@ -1,0 +1,27 @@
+{
+    "id": "4ABB0F41",
+    "path": "C:/Studium/WS2122/Stochastic Simulation/StochasticApproximation/RM_IV_Put_Analysis.r",
+    "project_path": "RM_IV_Put_Analysis.r",
+    "type": "r_source",
+    "hash": "304300162",
+    "contents": "",
+    "dirty": false,
+    "created": 1640081638879.0,
+    "source_on_save": false,
+    "relative_order": 4,
+    "properties": {
+        "tempName": "Untitled1",
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "0,26",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1640082987,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1640082987854,
+    "read_only": false,
+    "read_only_alternatives": []
+}
