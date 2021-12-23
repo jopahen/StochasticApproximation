@@ -1,7 +1,7 @@
 #We implement the RM-algorithm to find the IV with regard to the put option price
 source("BS_functions.r")
 
-RM_IV <- function(n = 10000, N = 100, I = 22, sigma_0 = 0.2, alpha_0 = 2/(120+100),
+RM_IV <- function(n = 1000, N = 100, I = 22, sigma_0 = 0.2, alpha_0 = 2/(120+100),
                   rho = 1){
   sigma <- sigma_0
   sigma_new <- sigma - alpha_0 * (mean(f(S(N, sigma = sigma))) - I)

@@ -4,7 +4,7 @@ source("RM_IV_Put.r")
 #select n = 1000 iterations, N = 1, 10, 100, 1000 samples per iteration
 #rho = 0.8 or 1
 n <- 1000
-Ns <- c(1,10,100,1000)
+Ns <- floor(10^seq(0,3,0.25))
 rho <- 1
 Nsims <- 20
 
@@ -20,6 +20,7 @@ for(i in 1:length(Ns)){
   print(MSE[i])
 }
 
+#plot simulation results
 plot(log10(n*Ns), log10(MSE))
 abline(a = 2, b = -1, col = "red", lty = "dashed")
 
