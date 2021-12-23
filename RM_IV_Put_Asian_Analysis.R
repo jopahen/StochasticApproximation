@@ -3,7 +3,7 @@ library(tictoc)
 source("RM_IV_Put_Asian.r")
 
 Nsims <- 20
-batch_sizes <- c(20, 30, 50, 70, 100, 250, 500, 1000) # 250, 500, 1000)
+batch_sizes <- c(20, 30, 50, 70, 100, 250, 500, 1000)
 MSEs <- numeric(length = length(batch_sizes))
 av_runtimes <- numeric(length = length(batch_sizes))
 I <- 22

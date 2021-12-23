@@ -35,9 +35,9 @@ Put_Asian_pricer <- function(N = 10^5, S_0 = 100, r = 0.05, sigma = 0.713,
   return(mean(g(S_path(N, S_0 = S_0, r = r, sigma = sigma, T = T))))
 }
 
-tic()
-sigma_IV_RM_Asian <- RM_IV_Asian(sd_monitor = TRUE)
-x <- toc()
+#tic()
+#sigma_IV_RM_Asian <- RM_IV_Asian(sd_monitor = TRUE)
+#x <- toc()
 #plot(sigma_IV_RM_Asian$sigmas)
 #plot(sigma_IV_RM_Asian$batch_sds, type = "l")
 #Put_Asian_pricer(sigma = sigma_IV_RM_Asian$sigma)
