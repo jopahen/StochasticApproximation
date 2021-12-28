@@ -32,8 +32,15 @@ RM_IV_Asian <- function(n = 1000, N = 1000, I = 22, sigma_0 = 0.1, alpha_0 = 2/(
 #we implement a high-iteration MC-pricer to validate accuracy
 Put_Asian_pricer <- function(N = 10^5, S_0 = 100, r = 0.05, sigma = 0.713,
                              K = 120, T = 0.2){
-  return(mean(g(S_path(N, S_0 = S_0, r = r, sigma = sigma, T = T))))
+  price <- mean(g(S_path(N, S_0 = S_0, r = r, sigma = sigma, T = T), K = K, r = r, T = T))
+  se <- sd(g(S_path(N, S_0 = S_0, r = r, sigma = sigma, T = T), K = K, r = r, T = T))
+  price_CI_lower <- price - qnorm(0.975) * se / sqrt(N)
+  price_CI_upper <- price + qnorm(0.975) * se / sqrt(N)
+  return(list(price = price, CI_lower = price_CI_lower,
+              CI_upper = price_CI_upper, se = se/sqrt(N)))
 }
+
+Pricing <- Put_Asian_pricer(N = 1000, K = 150, sigma = 0.713)
 
 #tic()
 #sigma_IV_RM_Asian <- RM_IV_Asian(sd_monitor = TRUE)

@@ -44,3 +44,27 @@ Put <- function(sigma = 0.1, S = 100, K = 120, r = 0.05, T = 0.2){
 
 #pricing formula wrt. sigma
 I <- function(sigma) Put(sigma)
+
+#price process pdf (single path vector)
+p <- function(x, S_0 = 100, r = 0.05, sigma = 0.1, T = 0.2){
+  m <- length(x)
+  dt <- T/m
+  S <- c(S_0, x)
+  factors <- c()
+  for(i in 1:length(x)){
+    d <- (log(S[i+1]/S[i]) - (r - sigma^2/2) * dt) / (sigma * sqrt(dt))
+    factor <- dnorm(d) / (S[i+1] * sigma * sqrt(dt))
+    factors <- c(factors, factor)
+  }
+  return(prod(factors))
+}
+
+#price process pdf (vectorized)
+p_vectorized <- function(X, S_0 = 100, r = 0.05, sigma = 0.1, T = 0.2){
+  if(is.null(dim(X))) return(as.numeric(lapply(X, p, S_0 = S_0, r = r,
+                                              sigma = sigma, T = T)))
+  return(apply(X, 1, p, S_0 = S_0, r = r, sigma = sigma, T = T))
+}
+
+#S_test <- S_path(100000)[,-1]
+#p_vectorized(S_test)

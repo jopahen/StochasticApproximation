@@ -15,7 +15,7 @@ for(i in 1:length(batch_sizes)){
     tic()
     RM <- RM_IV_Asian(batch_sd = batch_sizes[i], sd_monitor = TRUE)
     t <- toc()
-    price_err <- c(price_err, Put_Asian_pricer(sigma = RM$sigma))
+    price_err <- c(price_err, Put_Asian_pricer(sigma = RM$sigma)$price)
     times <- c(times, t$toc - t$tic)
   }
   MSEs[i] <- mean((I-price_err)^2)
