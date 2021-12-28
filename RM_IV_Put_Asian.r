@@ -3,10 +3,10 @@
 library(tictoc)
 source("BS_functions.r")
 
-RM_IV_Asian <- function(n = 1000, N = 1000, I = 22, sigma_0 = 0.1, alpha_0 = 2/(120+100),
-                  rho = 1, batch_sd = 50, sd_monitor = FALSE){
+RM_IV_Asian <- function(n = 1000, N = 1000, I = 22, sigma_0 = 1, alpha_0 = 2/(120+100),
+                  rho = 1, K = 120, batch_sd = 70, sd_monitor = FALSE){
   sigma <- sigma_0
-  sigma_new <- sigma - alpha_0 * (mean(g(S_path(N, sigma = sigma))) - I)
+  sigma_new <- sigma - alpha_0 * (mean(g(S_path(N, sigma = sigma), K = K)) - I)
   sigmas <- sigma_new
   batch_sds <- c()
   iter <- 0
@@ -14,7 +14,7 @@ RM_IV_Asian <- function(n = 1000, N = 1000, I = 22, sigma_0 = 0.1, alpha_0 = 2/(
   while(iter < n){
     sigma <- sigma_new
     alpha <- alpha_0 / (iter+1)^rho
-    sigma_new <- sigma - alpha_0 * (mean(g(S_path(N, sigma = sigma))) - I)
+    sigma_new <- sigma - alpha_0 * (mean(g(S_path(N, sigma = sigma), K = K)) - I)
     sigmas <- c(sigmas, sigma_new)
     err <- abs(sigma_new - sigma)
     iter <- iter + 1
@@ -24,29 +24,29 @@ RM_IV_Asian <- function(n = 1000, N = 1000, I = 22, sigma_0 = 0.1, alpha_0 = 2/(
     if(length(batch_sds) > 1 & sd_monitor){
       if(batch_sds[length(batch_sds)] > batch_sds[length(batch_sds)-1]) break
     }
-    #print(iter)
+    print(iter)
   }
   return(list(sigma = sigma_new, sigmas = sigmas, batch_sds = batch_sds))
 }
 
 #we implement a high-iteration MC-pricer to validate accuracy
-Put_Asian_pricer <- function(N = 10^5, S_0 = 100, r = 0.05, sigma = 0.713,
+Put_Asian_pricer <- function(N = 10^5, S_0 = 100, r = 0.05, sigma = 0.8,
                              K = 120, T = 0.2){
   price <- mean(g(S_path(N, S_0 = S_0, r = r, sigma = sigma, T = T), K = K, r = r, T = T))
   se <- sd(g(S_path(N, S_0 = S_0, r = r, sigma = sigma, T = T), K = K, r = r, T = T))
   price_CI_lower <- price - qnorm(0.975) * se / sqrt(N)
   price_CI_upper <- price + qnorm(0.975) * se / sqrt(N)
   return(list(price = price, CI_lower = price_CI_lower,
-              CI_upper = price_CI_upper, se = se/sqrt(N)))
+              CI_upper = price_CI_upper, se = se))
 }
 
-Pricing <- Put_Asian_pricer(N = 1000, K = 150, sigma = 0.713)
+#Pricing <- Put_Asian_pricer(N = 1000, K = 120, sigma = 0.8)
 
 #tic()
-#sigma_IV_RM_Asian <- RM_IV_Asian(sd_monitor = TRUE)
+sigma_IV_RM_Asian <- RM_IV_Asian(sd_monitor = TRUE)
 #x <- toc()
-#plot(sigma_IV_RM_Asian$sigmas)
-#plot(sigma_IV_RM_Asian$batch_sds, type = "l")
-#Put_Asian_pricer(sigma = sigma_IV_RM_Asian$sigma)
+plot(sigma_IV_RM_Asian$sigmas, type = "l")
+plot(sigma_IV_RM_Asian$batch_sds, type = "l")
+Put_Asian_pricer(sigma = sigma_IV_RM_Asian$sigma)
 
 
