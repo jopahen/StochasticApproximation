@@ -43,7 +43,7 @@ Put_Asian_pricer <- function(N = 10^5, S_0 = 100, r = 0.05, sigma = 0.8,
 #Pricing <- Put_Asian_pricer(N = 1000, K = 120, sigma = 0.8)
 
 #tic()
-sigma_IV_RM_Asian <- RM_IV_Asian(sd_monitor = TRUE)
+sigma_IV_RM_Asian <- RM_IV_Asian(sd_monitor = FALSE)
 #x <- toc()
 plot(sigma_IV_RM_Asian$sigmas, type = "l")
 plot(sigma_IV_RM_Asian$batch_sds, type = "l")

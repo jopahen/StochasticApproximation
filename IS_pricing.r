@@ -24,14 +24,14 @@ Put_Asian_pricer_IS <- function(N = 10^5, S_0 = 100, r = 0.05, r_IS = 0.1,
               CI_upper = price_CI_upper, se = se))
 }
 
-test1 <- Put_Asian_pricer(K = 150)
-test2 <- Put_Asian_pricer_IS(r_IS = -0.5)
+test1 <- Put_Asian_pricer(K = 150, sigma = 0.8)
+test2 <- Put_Asian_pricer_IS(K = 150, sigma = 0.8, r_IS = -0.5)
 
-rs <- seq(-3,1,0.2)
+rs <- seq(-2,1,0.1)
 ses <- numeric(length = length(rs))
 prices <- numeric(length = length(rs))
 for(i in 1:length(rs)){
-  Pricer <- Put_Asian_pricer_IS(K = 150, r_IS = rs[i])
+  Pricer <- Put_Asian_pricer_IS(K = 150, sigma = 0.8, r_IS = rs[i])
   ses[i] <- Pricer$se
   prices[i] <- Pricer$price
 }
