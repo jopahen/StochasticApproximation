@@ -5,7 +5,7 @@ source("RM_IV_Put.r")
 #rho = 0.8 or 1
 n <- 1000
 Ns <- floor(10^seq(0,3,0.25))
-rho <- 1
+rho <- 0.8
 Nsims <- 20
 
 MSE <- numeric(length = length(Ns))
@@ -14,7 +14,7 @@ for(i in 1:length(Ns)){
   N <- Ns[i]
   sims <- numeric(length = Nsims)
   for(j in 1:Nsims){
-    sims[j] <- RM_IV(n,N)
+    sims[j] <- RM_IV(n,N, rho = rho)
   }
   MSE[i] <- mean((sims - sigma_IV)^2)
   print(MSE[i])

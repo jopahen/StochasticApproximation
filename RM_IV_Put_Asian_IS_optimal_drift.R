@@ -1,11 +1,12 @@
 #We implement the RM-algorithm to find the IV with regard to the Asian
-#put option price, using importance sampling
+#put option price, using importance sampling with optimal drift
 source("BS_functions.r")
+source("optimal_drift.r")
+
 Put_Asian_pricer_IS <- function(N = 10^5, S_0 = 100, r = 0.05, r_IS = -0.5,
                                 sigma = 0.8, K = 150, T = 0.2){
   ISample <- S_path(N, S_0 = S_0, r = r_IS, sigma = sigma, T = T)
   frac <- g(ISample, K = K, r = r, T = T) * lratio_vectorized(ISample[,-1], S_0 = S_0, r = r, r_IS = r_IS, sigma = sigma, T = T)
-  #frac <- g(ISample, K = K, r = r, T = T) * p_vectorized(ISample[,-1], S_0 = S_0, r = r, sigma = sigma, T = T) / p_vectorized(ISample[,-1], S_0 = S_0, r = r_IS, sigma = sigma, T = T)
   price <- mean(frac)
   se <- sd(frac)
   price_CI_lower <- price - qnorm(0.975) * se / sqrt(N)
@@ -14,19 +15,22 @@ Put_Asian_pricer_IS <- function(N = 10^5, S_0 = 100, r = 0.05, r_IS = -0.5,
               CI_upper = price_CI_upper, se = se))
 }
 
-RM_IV_Asian_IS <- function(n = 1000, N = 1000, I = 49.3, sigma_0 = 1, alpha_0 = 2/(150+100),
-                        rho = 1, K = 150, batch_sd = 100, sd_monitor = FALSE){
+RM_IV_Asian_IS_OD <- function(n = 1000, N = 1000, I = 49.3, sigma_0 = 1, alpha_0 = 2/(150+100),
+                           rho = 1, K = 150, batch_sd = 100, sd_monitor = FALSE){
   sigma <- sigma_0
-  sigma_new <- sigma - alpha_0 * (Put_Asian_pricer_IS(N, K = K, sigma = sigma)$price - I)
+  drifts <- optimal_r(sigma)
+  sigma_new <- sigma - alpha_0 * (Put_Asian_pricer_IS(N, K = K, sigma = sigma, r_IS = drifts)$price - I)
   sigmas <- sigma_new
   batch_sds <- c()
   iter <- 0
   err <- abs(sigma_new - sigma)
   while(iter < n){
     sigma <- sigma_new
+    r_IS <- optimal_r(sigma)
     alpha <- alpha_0 / (iter+1)^rho
-    sigma_new <- sigma - alpha_0 * (Put_Asian_pricer_IS(N, K = K, sigma = sigma)$price - I)
+    sigma_new <- sigma - alpha_0 * (Put_Asian_pricer_IS(N, K = K, sigma = sigma, r_IS = r_IS)$price - I)
     sigmas <- c(sigmas, sigma_new)
+    drifts <- c(drifts, r_IS)
     err <- abs(sigma_new - sigma)
     iter <- iter + 1
     if(iter > batch_sd){
@@ -37,18 +41,11 @@ RM_IV_Asian_IS <- function(n = 1000, N = 1000, I = 49.3, sigma_0 = 1, alpha_0 = 
     }
     #print(iter)
   }
-  return(list(sigma = sigma_new, sigmas = sigmas, batch_sds = batch_sds))
+  return(list(sigma = sigma_new, sigmas = sigmas, batch_sds = batch_sds, drifts = drifts))
 }
 
-sigma_IV_RM_Asian_IS <- RM_IV_Asian_IS(sd_monitor = FALSE)
-plot(sigma_IV_RM_Asian_IS$sigmas, type = "l")
-plot(sigma_IV_RM_Asian_IS$batch_sds, type = "l")
-#Put_Asian_pricer_IS(sigma = sigma_IV_RM_Asian_IS$sigma)
-
-
-
-##Price range ?
-#t <- seq(0, 0.2, 0.2/50)
-#t <- t[-1]
-#exp(-0.05*0.2)*(150-100/50 * sum(exp(0.05*t)))
-#exp(-0.05*0.2)*150
+RM <- RM_IV_Asian_IS_OD(sd_monitor = FALSE)
+plot(RM$sigmas, type = "l")
+plot(RM$batch_sds, type = "l")
+plot(RM$drifts, type = "l")
+Put_Asian_pricer_IS(sigma = RM$sigma)

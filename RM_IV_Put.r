@@ -17,4 +17,4 @@ RM_IV <- function(n = 1000, N = 100, I = 22, sigma_0 = 0.2, alpha_0 = 2/(120+100
   return(sigma_new)
 }
 
-#sigma_IV_RM <- RM_IV(alpha_0 = 2/(K+S_0))
+#sigma_IV_RM <- RM_IV()
