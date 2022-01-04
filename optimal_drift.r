@@ -33,4 +33,4 @@ optimal_r <- function(sigma){
 }
 
 #x <- seq(0,5,0.01)
-#lines(x, optimal_r(x), type = "l", col = "red")
+lines(x, optimal_r(x), type = "l", col = "red")

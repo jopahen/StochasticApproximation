@@ -15,8 +15,8 @@ Put_Asian_pricer_IS <- function(N = 10^5, S_0 = 100, r = 0.05, r_IS = -0.5,
               CI_upper = price_CI_upper, se = se))
 }
 
-RM_IV_Asian_IS_OD <- function(n = 1000, N = 1000, I = 49.3, sigma_0 = 1, alpha_0 = 2/(150+100),
-                           rho = 1, K = 150, batch_sd = 100, sd_monitor = FALSE){
+RM_IV_Asian_IS_OD <- function(n = 200, N = 10000, I = 49.3, sigma_0 = 1, alpha_0 = 2/(150+100),
+                           rho = 0.8, K = 150, batch_sd = 50, sd_monitor = FALSE){
   sigma <- sigma_0
   drifts <- optimal_r(sigma)
   sigma_new <- sigma - alpha_0 * (Put_Asian_pricer_IS(N, K = K, sigma = sigma, r_IS = drifts)$price - I)
@@ -39,13 +39,17 @@ RM_IV_Asian_IS_OD <- function(n = 1000, N = 1000, I = 49.3, sigma_0 = 1, alpha_0
     if(length(batch_sds) > 1 & sd_monitor){
       if(batch_sds[length(batch_sds)] > batch_sds[length(batch_sds)-1]) break
     }
-    #print(iter)
+    print(iter)
   }
   return(list(sigma = sigma_new, sigmas = sigmas, batch_sds = batch_sds, drifts = drifts))
 }
 
 RM <- RM_IV_Asian_IS_OD(sd_monitor = FALSE)
-plot(RM$sigmas, type = "l")
-plot(RM$batch_sds, type = "l")
+plot(RM$sigmas, type = "l", main = "Evolution of RM-iterations",
+     ylab = "sigma", xlab = "Iterations", col = "blue")
+plot(RM$batch_sds, type = "l",
+     main = "Evolution of batch-standard errors (batch size = 50)",
+     xlab = "Iterations - batch size",
+     ylab = "batch std. err.", col = "red")
 plot(RM$drifts, type = "l")
 Put_Asian_pricer_IS(sigma = RM$sigma)
