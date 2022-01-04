@@ -2,7 +2,7 @@
 #put option price
 source("BS_functions.r")
 
-RM_IV_Asian <- function(n = 200, N = 10000, I = 49.3, sigma_0 = 1, alpha_0 = 2/(150+100),
+RM_IV_Asian <- function(n = 500, N = 10000, I = 49.3, sigma_0 = 1, alpha_0 = 2/(150+100),
                   rho = 0.8, K = 150, batch_sd = 50, sd_monitor = FALSE){
   sigma <- sigma_0
   #RM-update (w/ crude MC-estimator):
@@ -46,9 +46,9 @@ sigma_IV_RM_Asian <- RM_IV_Asian(sd_monitor = FALSE)
 plot(sigma_IV_RM_Asian$sigmas, type = "l", main = "Evolution of RM-iterations",
      ylab = "sigma", xlab = "Iterations", col = "blue")
 plot(sigma_IV_RM_Asian$batch_sds, type = "l",
-     main = "Evolution of batch-standard errors (batch size = 50)",
+     main = "Evolution of batch standard errors (batch size = 50)",
      xlab = "Iterations - batch size",
      ylab = "batch std. err.", col = "red")
-Put_Asian_pricer_IS(sigma = sigma_IV_RM_Asian$sigma)
+Put_Asian_pricer(sigma = sigma_IV_RM_Asian$sigma, K = 150)
 
 

@@ -22,7 +22,7 @@ for(i in 1:length(sigmas)){
   optimal_rs[i] <- optimize(objective, interval = c(-6,1), sigma = sigmas[i])$minimum
 }
 
-#plot(sigmas, optimal_rs, pch = 20)
+plot(sigmas, optimal_rs, pch = 20)
 
 #spline interpolation of optimal drifts based on sigma
 data <- data.frame(sigmas, optimal_rs)
@@ -32,5 +32,5 @@ optimal_r <- function(sigma){
   return(as.numeric(predict(spline_fit, newdata = list(sigmas = sigma))))
 }
 
-#x <- seq(0,5,0.01)
+x <- seq(0,5,0.01)
 lines(x, optimal_r(x), type = "l", col = "red")
