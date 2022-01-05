@@ -92,12 +92,13 @@ p_vectorized <- function(X, S_0 = 100, r = 0.05, sigma = 0.1, T = 0.2){
   return(apply(X, 1, p, S_0 = S_0, r = r, sigma = sigma, T = T))
 }
 
-#S_test <- S_path(1000, r = 0.05, sigma = 0.8)
+#S_test <- S_path(100000, r = 0.05, sigma = 0.8)
 #S_test1 <- S_test[,-1]
 #lratio_vectorized(S_test1, r_IS = -1)
 #g(S_test)
 #mean(S_path(100000)[,51])
 #100*exp(0.05*0.2)
-#plot(density(rowMeans(S_test1)))
+#plot(density(rowMeans(S_test1)), main = "Density approximation
+     #(S_0 = 100, r = 0.05, sigma = 0.8)", xlab = "discrete monitoring average")
 
 

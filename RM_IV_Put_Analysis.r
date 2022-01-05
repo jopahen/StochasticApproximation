@@ -15,7 +15,7 @@ for(i in 1:length(Ns)){
   N <- Ns[i]
   sims <- numeric(length = Nsims)
   for(j in 1:Nsims){
-    sims[j] <- RM_IV(n,N, rho = rho)
+    sims[j] <- RM_IV(n,N, rho = rho)$sigma
   }
   MSE[i] <- mean((sims - sigma_IV)^2)
 }
