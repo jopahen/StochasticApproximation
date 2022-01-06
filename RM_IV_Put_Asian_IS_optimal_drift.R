@@ -54,7 +54,7 @@ RM_IV_Asian_IS_OD <- function(n = 500, N = 10000, I = 49.3, sigma_0 = 1,
         learn_flag <- TRUE
       }
     }
-    print(iter)
+    #print(iter)
   }
   return(list(sigma = sigma_new, sigmas = sigmas,
               batch_sds = batch_sds, drifts = drifts))
