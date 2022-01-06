@@ -7,8 +7,8 @@ source("BS_functions.r") #get auxiliary functions
 #sd_monitor = flag to determine, if the stopping criterion should be used,
 #otherwise the algorithm runs without learning rate!
 #all other parameters according to notation in report
-RM_IV_Asian <- function(n = 500, N = 10000, I = 22, sigma_0 = 1, alpha_0 = 2/(120+100),
-                  rho = 0.8, K = 120, batch_sd = 100, sd_monitor = FALSE, tol = 10^-4){
+RM_IV_Asian <- function(n = 500, N = 10000, I = 49.3, sigma_0 = 1, alpha_0 = 2/(150+100),
+                  rho = 0.8, K = 150, batch_sd = 100, sd_monitor = FALSE, tol = 10^-4){
   sigma <- sigma_0
   #RM-update (w/ crude MC-estimator):
   sigma_new <- sigma - alpha_0 * (mean(g(S_path(N, sigma = sigma), K = K)) - I)
@@ -40,7 +40,7 @@ RM_IV_Asian <- function(n = 500, N = 10000, I = 22, sigma_0 = 1, alpha_0 = 2/(12
         learn_flag <- TRUE
       } 
     }
-    print(iter) #print to see that everything works (comment out if desired)
+    #print(iter) #print to see that everything works (comment out if desired)
   }
   return(list(sigma = sigma_new, sigmas = sigmas, batch_sds = batch_sds))
 }
@@ -59,18 +59,18 @@ Put_Asian_pricer <- function(N = 10^5, S_0 = 100, r = 0.05, sigma = 0.8,
 }
 
 #plot results
-sigma_IV_RM_Asian <- RM_IV_Asian(sd_monitor = TRUE)
-plot(sigma_IV_RM_Asian$sigmas, type = "l", main = "Evolution of RM-iterations",
-     ylab = "sigma", xlab = "Iterations", col = "blue")
-plot(sigma_IV_RM_Asian$batch_sds, type = "l",
-     main = "Evolution of batch standard errors
-     (batch size = 100)",
-     xlab = "Iterations - batch size",
-     ylab = "batch std. err.", col = "red")
+#sigma_IV_RM_Asian <- RM_IV_Asian(sd_monitor = TRUE)
+#plot(sigma_IV_RM_Asian$sigmas, type = "l", main = "Evolution of RM-iterations",
+#     ylab = "sigma", xlab = "Iterations", col = "blue")
+#plot(sigma_IV_RM_Asian$batch_sds, type = "l",
+#     main = "Evolution of batch standard errors
+#     (batch size = 100)",
+#     xlab = "Iterations - batch size",
+#     ylab = "batch std. err.", col = "red")
 
 #give out results
-sigma_IV_RM_Asian$sigma
+#sigma_IV_RM_Asian$sigma
 #check accuracy with high-iteration MC-pricer
-Put_Asian_pricer(sigma = sigma_IV_RM_Asian$sigma, K = 120)
+#Put_Asian_pricer(sigma = sigma_IV_RM_Asian$sigma, K = 150)
 
 

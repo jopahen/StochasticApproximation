@@ -1,6 +1,7 @@
+#set.seed(310198)
 #finding optimal drift
-library(splines)
-source("BS_functions.r")
+library(splines) #package to do spline interpolation
+source("BS_functions.r") #auxiliary functions
 
 #objective (expression (18) in project description)
 #to be minimized with respect to drift r_IS (log-transformed)
@@ -15,7 +16,8 @@ objective <- function(r_IS, S = S_sim, sigma = 0.1, r = 0.05,
   return(objective)
 }
 
-#simulate paths and optimize r_IS for given range of volatilities (sigmas)
+#simulate N paths and optimize r_IS for given range of volatilities (sigmas)
+#same paths used for optimization over each sigma
 N <- 10000
 sigmas <- seq(0.1,5,0.1)
 optimal_rs <- numeric(length = length(sigmas))
@@ -27,7 +29,8 @@ for(i in 1:length(sigmas)){
 }
 
 #plot optimal r_IS wrt. sigmas
-plot(sigmas, optimal_rs, pch = 20)
+plot(sigmas, optimal_rs, pch = 20, main = "Optimal IS-drifts",
+     xlab = "sigma", ylab = "optimal drift", col = "gray")
 
 #spline interpolation (degree 5) of optimal drifts based on sigma
 data <- data.frame(sigmas, optimal_rs)
@@ -39,4 +42,4 @@ optimal_r <- function(sigma){
 
 #plot spline interpolation
 x <- seq(0,5,0.01)
-lines(x, optimal_r(x), type = "l", col = "red")
+lines(x, optimal_r(x), type = "l", col = "red", lwd = 2)
