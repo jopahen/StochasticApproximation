@@ -24,5 +24,7 @@ RM_IV <- function(n = 1000, N = 10000, I = 22, sigma_0 = 0.2, alpha_0 = 2/(120+1
   return(list(sigma = sigma_new, sigmas = sigmas))
 }
 
-sigma_IV_RM <- RM_IV()
-plot(sigma_IV_RM$sigmas)
+##plot results
+#sigma_IV_RM <- RM_IV()
+#plot(sigma_IV_RM$sigmas, type = "l", col = "blue", ylab = "sigma",
+#     main = "RM-iterates")

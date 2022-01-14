@@ -5,7 +5,7 @@ source("BS_functions.r") #get auxiliary functions
 
 #n = maximum iterations
 #sd_monitor = flag to determine, if the stopping criterion should be used,
-#otherwise the algorithm runs without learning rate!
+#otherwise the algorithm runs without adjusting learning rate!
 #all other parameters according to notation in report
 RM_IV_Asian <- function(n = 500, N = 10000, I = 49.3, sigma_0 = 1, alpha_0 = 2/(150+100),
                   rho = 0.8, K = 150, batch_sd = 100, sd_monitor = FALSE, tol = 10^-4){
@@ -58,7 +58,7 @@ Put_Asian_pricer <- function(N = 10^5, S_0 = 100, r = 0.05, sigma = 0.8,
               CI_upper = price_CI_upper, se = se))
 }
 
-#plot results
+##plot results
 #sigma_IV_RM_Asian <- RM_IV_Asian(sd_monitor = TRUE)
 #plot(sigma_IV_RM_Asian$sigmas, type = "l", main = "Evolution of RM-iterations",
 #     ylab = "sigma", xlab = "Iterations", col = "blue")
@@ -68,9 +68,9 @@ Put_Asian_pricer <- function(N = 10^5, S_0 = 100, r = 0.05, sigma = 0.8,
 #     xlab = "Iterations - batch size",
 #     ylab = "batch std. err.", col = "red")
 
-#give out results
+##give out results
 #sigma_IV_RM_Asian$sigma
-#check accuracy with high-iteration MC-pricer
+##check accuracy with high-iteration MC-pricer
 #Put_Asian_pricer(sigma = sigma_IV_RM_Asian$sigma, K = 150)
 
 

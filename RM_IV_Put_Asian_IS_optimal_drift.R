@@ -60,7 +60,7 @@ RM_IV_Asian_IS_OD <- function(n = 500, N = 10000, I = 49.3, sigma_0 = 1,
               batch_sds = batch_sds, drifts = drifts))
 }
 
-#diagnostic plots/validation:
+##diagnostic plots/validation:
 #RM <- RM_IV_Asian_IS_OD(sd_monitor = TRUE)
 #plot(RM$sigmas, type = "l", main = "Evolution of RM-iterations",
 #     ylab = "sigma", xlab = "Iterations", col = "blue")

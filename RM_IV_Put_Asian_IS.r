@@ -56,7 +56,7 @@ RM_IV_Asian_IS <- function(n = 500, N = 10000, I = 49.3, sigma_0 = 1,
   return(list(sigma = sigma_new, sigmas = sigmas, batch_sds = batch_sds))
 }
 
-#diagnostic plots/validation:
+##diagnostic plots/validation:
 #sigma_IV_RM_Asian_IS <- RM_IV_Asian_IS(sd_monitor = TRUE)
 #plot(sigma_IV_RM_Asian_IS$sigmas, type = "l", main = "Evolution of RM-iterations",
 #     ylab = "sigma", xlab = "Iterations", col = "blue")
