@@ -72,5 +72,3 @@ Put_Asian_pricer <- function(N = 10^5, S_0 = 100, r = 0.05, sigma = 0.8,
 #sigma_IV_RM_Asian$sigma
 ##check accuracy with high-iteration MC-pricer
 #Put_Asian_pricer(sigma = sigma_IV_RM_Asian$sigma, K = 150)
-
-
